@@ -3,11 +3,13 @@ rm(list = ls())
 library(audio)
 library(seewave)
 source('iso226.R')
-s=load.wave('emotions/speech/neutral/m2neu1.wav')
+s=load.wave('emotions/speech/neutral/f1neu1.wav')
+T=length(s)/s$rate
 
 envelope=function(v) {
   vabs=abs(v)
   vfil=ffilter(vabs,from = 0.000001,to = 12,output='audioSample')
+  vfil=ffilter(vfil,from = 0.000001,to = 12,output='audioSample')
   vres=resamp(vfil,g=100)
   dim(vres)=NULL
   min2=min(vres[vres > 0])
@@ -38,9 +40,19 @@ segmentVoice=function(v) {
   # Compute onset envelope velocity
   vdenv=diff(venv8)
   vdenv[vdenv < 0] = 0
+  vdenv[1] = 0
+  vdenv[length(vdenv)] = 0
   
-  # Find os-s and oe-s
-  
+  # Find os-s, oe-s and op-s
+  vddenv=diff(vdenv)
+  vddenvs=c(vddenv,vddenv[length(vddenv)])
+  vddenve=c(vddenv[1],vddenv)
+  oss=which(vddenvs > 0 & vdenv == 0)
+  oes=which(vddenve < 0 & vdenv == 0)
+  ops=vector('double',length(oss))
+  for(it in 1:length(oss)) {
+    ops[it]=which.max(vdenv[oss[it]:oes[it]])+oss[it]-1
+  }
   
   return(vdenv)
 }
