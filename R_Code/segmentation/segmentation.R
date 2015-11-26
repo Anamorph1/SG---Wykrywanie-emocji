@@ -1,15 +1,23 @@
-rm(list = ls())
-
 library(audio)
 library(seewave)
 source('iso226.R')
-s=load.wave('emotions/speech/neutral/f1neu1.wav')
-T=length(s)/s$rate
+
+score=function(x,idx,bn) {
+  ix=x[idx]
+  s=vector('double',length(idx))
+  f1=ix <  bn[1]
+  f2=ix >= bn[2]
+  f3=!f1 & !f2
+  s[f1]=0
+  s[f2]=1
+  s[f3]=(ix[f3]-bn[1])/(bn[2]-bn[1])
+  return(s)
+}
 
 envelope=function(v) {
   vabs=abs(v)
-  vfil=ffilter(vabs,from = 0.000001,to = 12,output='audioSample')
-  vfil=ffilter(vfil,from = 0.000001,to = 12,output='audioSample')
+  vfil=ffilter(vabs,from=0.000001,to=12,output='audioSample')
+  vfil=ffilter(vfil,from=0.000001,to=12,output='audioSample')
   vres=resamp(vfil,g=100)
   dim(vres)=NULL
   min2=min(vres[vres > 0])
@@ -54,9 +62,25 @@ segmentVoice=function(v) {
     ops[it]=which.max(vdenv[oss[it]:oes[it]])+oss[it]-1
   }
   
-  return(vdenv)
+  # Thresholds
+  tb=c(0.01, 0.1)
+  ts=c(0.6, 0.7)
+  tc=c(0.85, 0.97)
+  tvp=c(0.01, 0.1)
+  
+  # Scores
+  bs=score(vdenv,ops,tb)
+  ss=score(venvn$envn1,oes,ts)
+  cs=score(venvn$envn1,oes,tc)
+  vps=score(vdenv,ops,tvp)
+  vs=ss*(1-cs)*vps
+  
+  # Filter candidates
+  for(it in bs) {
+  }
+  
+  out=list(floor(oss*length(v)/length(vdenv)),oss*length(v)/(length(vdenv)*v$rate))
+  names(out)=c('idx','time')
+  
+  return(out)
 }
-
-a=segmentVoice(s)
-# plot(seq(1,length(a$v1env),length.out = length(s)),s,type = 'l')
-plot(1:length(a),a,type = 'l')
