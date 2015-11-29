@@ -1,5 +1,5 @@
 # Author: Michal Maciejewski
-# Prepare test set:
+# Prepare learning set:
 # m - mean
 # s - standard deviation
 # first index - parameter
@@ -45,17 +45,17 @@ p4s2 <- 3
 p4s3 <- 2
 p4s4 <- 0.5
 
-# Above we created parameters of four parameters for four types of objects.
-# Now we create these objects. Number of test objects of type x is given in variable
-# numx.
+# Above we created parameters (mean and standard deviation) of four parameters of objects
+# for four types of objects. Now we create these objects. Number of learning objects of
+# type x is given in variable numx.
 num1 <- 50
 num2 <- 40
 num3 <- 75
 num4 <- 25
 
 # WARNING
-# Here we create matrix of parameters for learning object of first type.
-# It should be created in previous step.
+# Here we create matrix of parameters for learning object of all types. This should be
+# created in previous step (parametrization of audio samples).
 t1p1 <- matrix(rnorm(num1, mean = p1m1, sd = p1s1), num1, 1)
 t1p2 <- matrix(rnorm(num1, mean = p2m1, sd = p2s1), num1, 1)
 t1p3 <- matrix(rnorm(num1, mean = p3m1, sd = p3s1), num1, 1)
@@ -99,7 +99,8 @@ rm(t4p1, t4p2, t4p3, t4p4)
 # Above we have four matrixes of parameters for four types of objects (it could be
 # more types or less with more or less parameters). Something like that should produce
 # previous step with learning samples, so everything below is for the final usage
-#(you only have to change some names of variables or strings).
+# (you only have to change some names of variables or strings). So at the end, above code
+# should be commented and not used - in other R script should be created objects learnX.
 
 learn_data <- matrix(nrow = 0, ncol = dim(learnA)[2])
 colnames(learn_data) <- c("Param1", "Param2", "Param3", "Param4")
