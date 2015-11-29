@@ -1,0 +1,13 @@
+Authors:
+Bartosz Szmit
+Michal Maciejewski
+
+This is the implementation of svm algorithm (wrappers to e1071
+library functions).
+The two of functions are in svm.R file.
+
+In parameters.R are descriptions how to prepare test data for learning the
+svm machine (with example of random data creation).
+
+In test.R is example of algorithm usage - how to learn the machine and
+how to use learned machine to get type of object.
