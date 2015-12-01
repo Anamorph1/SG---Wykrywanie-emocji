@@ -1,0 +1,30 @@
+library(audio);
+library(seewave);
+
+#loading a wave
+s<-load.wave("f1neu1.wav");
+
+#FFT
+f<-spec(s);
+
+#Low-Pass filter
+w<-ffilter(s,to=4000,output = "audioSample");
+
+#Sample rate change
+finalfreq<-resamp(w,g=8000,output='audioSample');
+finalfreqspec<-spec(finalfreq);
+
+#noise removal
+nonoise=rmnoise(finalfreq,output='audioSample');
+nonoisespec<-spec(nonoise);
+nonoisem=rmnoise(finalfreq,output='matrix');
+
+#Differentiate
+preemfaza<-0;
+for(i in 2:18389){
+  preemfaza[i]<-nonoisem[i]-nonoisem[i-1];
+}
+preemfazaaudio<-audioSample(preemfaza,rate=8000);
+preemfazaspec<-spec(preemfazaaudio);
+
+end
