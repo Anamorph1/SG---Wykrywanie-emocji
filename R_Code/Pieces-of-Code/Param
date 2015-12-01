@@ -1,0 +1,24 @@
+rm(list = ls())
+library(audio);
+library(seewave);
+library(tuneR);
+
+#source('Segmentation.R')
+#loading a wave
+samples <- readWave("f1fea1.wav"); 
+# KONIECZNIE readWave!!! load.wave nie działa!!! http://www.inside-r.org/node/209092
+
+#MFCC
+m1 <- melfcc(samples); # - http://www.inside-r.org/packages/cran/tuneR/docs/melfcc
+# w tej funkcji można ustalac dużo parametrów, co najważniejsze - liczbę współczynników mfcc
+
+#CZĘSTOTLIWOŚĆ FUNDAMENTALNA
+qq <- fund(samples,f=8000,fmax=300,type="b",ovlp=50,threshold=5,ylim=c(0,1),cex=0.5)
+# http://rug.mnhn.fr/seewave/HTML/MAN/fund.html - przed użyciem zapoznaj się z treścią helpa lub skonsultuj się z cezarym piskor-ignatowiczem.
+
+# formanty - ślepy zaułek. więcej informacji u Anny Musiał.
+
+#ENERGIA SYGNAŁU
+
+samples <- load.wave("f1fea1.wav");
+E <- sum((samples^2)); #energia sygnału to suma kwadratów modułów wartości sygnału. jako że mamy kwadrat to moduł nie jest potrzebny.
