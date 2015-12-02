@@ -77,6 +77,11 @@ for(it in 2:length(bndi)) {
   Params_matrix[it,28] = f_fund
 }
 
-Params_matrix = Params_matrix
-
+#Params_matrix = Params_matrix
+  params_list<-list("par_matrix"=Params_matrix,"low_pass_filter"=w,"nonoise"=nonoise,
+                    "czest_fundamentalna"=qq ,"energ_sygnalu"=E, "finalfreqspec"=finalfreqspec,
+                    "nonoise"=nonoise,"nonoisespec"=nonoisespec,"nonoisem"=nonoisem,
+                    "preemfazaaudio"=preemfazaaudio,"preemfazaspec"=preemfazaspec,"bndi"=bndi)
+  
+  # access to list: params_list$element name eg, : params_list$low_pass_filter equal w
 }
