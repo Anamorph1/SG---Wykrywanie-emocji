@@ -7,7 +7,9 @@ source('compute_params.R')
 
 load('svm_machine');
 
-Params_matrix = compute_params("speech/f2joy3.wav")
+#Params_matrix = compute_params("speech/f2joy3.wav")
+params_list= compute_params("speech/f2joy3.wav")
+Params_matrix<-params_list$par_matrix;
 
 #wrzucenie parametrow do SVM
 pred <- predict_class(svm_machine, Params_matrix)
