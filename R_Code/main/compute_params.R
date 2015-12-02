@@ -48,27 +48,33 @@ for(it in 2:length(bndi)) {
   ##################ekstrakcja cech####################  
   
   single_segment = s2[bndi[it-1]:bndi[it]]
+  #gdy byly zbyt krotkie probki, to funkcje melfcc i fund wyrzucaja bledy
+  if( length(single_segment) < 1000)
+    next
+
   #ENERGIA SYGNALU
   E <- sum((single_segment^2));
   
   #zamiana na inną klase
   save.wave(single_segment, "temp.wav")
   samples <- readWave("temp.wav");
-  
+
   #MFCC
   m1 <- melfcc(samples, numcep = 26); # - http://www.inside-r.org/packages/cran/tuneR/docs/melfcc
   # w tej funkcji mozna ustalac duzo parametrow, co najwazniejsze - liczbÄ™ wspĂłĹ‚czynnikĂłw mfcc
   for (j in 1:26) {
     Params_matrix[it,j] = mean(m1[,j])
   }
-  
-  #CZESTOTLIWOSC FUNDAMENTALNA - na razie nie dziala
-  #qq <- fund(samples,f=8000,fmax=300)#,type="b",ovlp=50,threshold=5,ylim=c(0,1),cex=0.5, plot = FALSE)
-  #f_fund = mean(qq[,2], na.rm = TRUE)
+
   # http://rug.mnhn.fr/seewave/HTML/MAN/fund.html - przed uzyciem zapoznaj sie z treĹ›ciÄ… helpa lub skonsultuj siÄ™ z cezarym piskor-ignatowiczem.
-  
+  #CZESTOTLIWOSC FUNDAMENTALNA - na razie nie dziala
+  qq <- fund(samples,f=8000,fmax=300,type="b",ovlp=50,threshold=5,ylim=c(0,1),cex=0.5, plot = FALSE)
+  f_fund = mean(qq[,2], na.rm = TRUE)
+  if (is.na(f_fund))
+    f_fund = 0
+
   Params_matrix[it,27] = E
-  Params_matrix[it,28] = 0 #f_fund
+  Params_matrix[it,28] = f_fund
 }
 
 Params_matrix = Params_matrix
