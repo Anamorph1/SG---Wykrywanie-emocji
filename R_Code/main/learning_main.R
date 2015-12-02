@@ -1,4 +1,11 @@
-########################################## Preprocessing  #######################
+#
+#Skrypt uczy tworzy maszyne SVM na podstawie probek z bazy.
+#U mnie zajmuje to okolo 10 min.
+#Wszystkie probki maja byc w folderze main/speech/
+#
+#Zmienna results zawiera informacje jakie emocje zostaly wykryte.
+#Np. Wszystkie probki dla pierwszej kolumny powinny wyjsc "anger"
+
 rm(list = ls())
 library(audio);
 library(seewave);
@@ -178,7 +185,7 @@ for(j in 1:4) {
 #learn_anger = rbind(learn_anger, Params_matrix)
 
 
-##########po pÄ™tli
+##########po pêtli
 
 learn_data <- matrix(nrow = 0, ncol = dim(learn_anger)[2])
 #colnames(learn_data) <- c("Param1", "Param2", "Param3", "Param4")
@@ -191,6 +198,17 @@ learn_states <- structure(c(rep(1L, dim(learn_anger)[1]),
                             rep(5L, dim(learn_neutral)[1]),
                             rep(6L, dim(learn_sadness)[1])),
                           .Label = c("Anger", "Boredom", "Fear", "Joy", "Neutral", "Sadness"), class = "factor")
+
+#erasing empty rows
+to_erase = c()
+for (i in 1:(dim(learn_data)[1])){
+  if (learn_data[i,27] == 0 || is.na(learn_data[i,27])){
+    to_erase = c(to_erase, i)
+  }
+}
+learn_data = learn_data[-to_erase,]
+learn_states = learn_states[-to_erase]
+
 
 source("svm.R")
 # Learning machine
