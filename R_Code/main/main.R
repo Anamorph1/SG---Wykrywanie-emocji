@@ -7,16 +7,15 @@ source('compute_params.R')
 
 load('svm_machine');
 
+Params_matrix = compute_params("speech/f2joy3.wav")
 
-Params_matrix = compute_params("f3sad2.wav") #speech/m4fea1.wav")
+#wrzucenie parametrow do SVM
+pred <- predict_class(svm_machine, Params_matrix)
 
-vector = matrix(data = 0, nrow = 1, ncol = 28)
-for(i in 1:28){
-  vector[i] = mean(Params_matrix[,i])
-}
+#znalezienie najczestszej wartosci
+pred2 = sort(table(pred),decreasing=TRUE)[1]
 
-pred <- predict_class(svm_machine, vector)
-print(pred)
-
+res = names(pred2)#rozpoznany obiekt, jako string
+probability = pred2/length(pred) #coś na kszalt prawdopodobienstwa
 
 end
