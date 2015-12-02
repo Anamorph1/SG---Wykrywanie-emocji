@@ -32,13 +32,16 @@ for(j in 1:4) {
     learn_anger = rbind(learn_anger, Params_matrix)
     cnt=cnt+1;
   }
-  for(i in 2:5){
+  for(i in 1:5){
     
     s2 <- "bor";
     
     s3<-as.character(i)
     s4<-".wav"
     name<-paste(s1,s2,s3,s4,sep='')
+    #if (name == "speech/f1bor1.wav")
+    #  next
+    
     Params_matrix = compute_params(name)
     learn_boredom = rbind(learn_boredom, Params_matrix)
     cnt=cnt+1;
@@ -110,8 +113,8 @@ for(j in 1:4) {
     s3<-as.character(i)
     s4<-".wav"
     name<-paste(s1,s2,s3,s4,sep='')
-    if (name == "m2bor5.wav")
-      next
+    #if (name == "speech/m2bor5.wav")
+    #  next
     
     Params_matrix = compute_params(name)
     learn_boredom = rbind(learn_boredom, Params_matrix)
@@ -150,13 +153,16 @@ for(j in 1:4) {
     learn_neutral = rbind(learn_neutral, Params_matrix)
     cnt=cnt+1;
   } 
-  for(i in 3:5){
+  for(i in 1:5){
     
     s2 <- "sad";
     
     s3<-as.character(i)
     s4<-".wav"
     name<-paste(s1,s2,s3,s4,sep='')
+    #if (name == "speech/m1sad2.wav")
+    #  next
+    
     Params_matrix = compute_params(name)
     learn_sadness = rbind(learn_sadness, Params_matrix)
     cnt=cnt+1;
